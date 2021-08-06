@@ -13,3 +13,7 @@ So there are those configuration files used:
 `local_settings.nix` - this file included as an example of how to provide per-instance local settings, such that you will be able to use one repo for multiple NixOS instances and some of them may use specific settings (like static IP address/routes and etc).
 `os-users.nix` - contains set of users, that are allowed to access NixOS instance by ssh-public-key.
 `overlays/` - directory, which is supposed to contain number of git submodules with nix-expressions, which are supposed to be imported from `configuration.nix`.
+
+# Submodules
+
+`overlays/mempool-overlay` is a git submodule 
