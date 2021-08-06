@@ -2,6 +2,11 @@
 # users.users value
 { config, pkgs, ... }:
 {
+  thartman = {
+    isNormalUser = true;
+    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    openssh.authorizedKeys.keys = [ "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKdNobBy0ui5ibH8OKBw3RibPqIaV1ZmPyBFLfWzKOUX thomashartman1@gmail.com" ];
+    };
   dambaev = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
