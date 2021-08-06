@@ -1,9 +1,9 @@
 {pkgs, lib, ...}@args:
 let
   hostname = import ./local.hostname.nix; # get the hostname of the current host
-#  zabbix_server = import ./local.zabbix_server.nix; # get the IP of the zabbix server
-#  # default config, dependent on hostnames
-#  default_config = {
+  zabbix_server = import ./local.zabbix_server.nix; # get the IP of the zabbix server
+  # default config, dependent on hostnames
+  default_config = {
 #    networking.hostName = hostname;
 #    services.zabbixAgent = {
 #      server = zabbix_server;
@@ -11,7 +11,7 @@ let
 #        Hostname = hostname;
 #      };
 #    };
-#  };
+  };
   build_config = all_configs:
     if lib.hasAttrByPath [ hostname ] all_configs
     then lib.getAttrFromPath [ hostname ] all_configs
