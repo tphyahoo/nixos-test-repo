@@ -46,6 +46,7 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
+  networking.firewall.logRefusedConnections = false; # we are not interested in a logs of refused connections
 
   # users are defined in a separate module in order to be accessable in get modules
   users.users = import ./os-users.nix args;
