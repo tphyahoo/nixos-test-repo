@@ -17,7 +17,7 @@
     ];
 
   # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
-  service.mempool.enable = true;
+  services.mempool.enable = true;
 
 
   # Use the GRUB 2 boot loader.
