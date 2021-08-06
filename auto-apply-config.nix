@@ -5,12 +5,6 @@ let
     #!${pkgs.stdenv.shell} -e
 
 
-    function do_rebuild(){
-      # if there are new updates, apply them immidiately
-      echo "config must be rebuild"
-      /run/current-system/sw/bin/systemctl stop nixos-upgrade
-      /run/current-system/sw/bin/systemctl start nixos-upgrade --no-block
-    }
     cd /etc/nixos
     git status | grep modified > /dev/null && {
       echo "some uncommited changes had been detected, removing"
@@ -20,7 +14,7 @@ let
       git submodule init || true # in case of first run
       git submodule update --remote # don't force the support to update every repo
     }
-    do_rebuild
+    /run/current-system/sw/bin/systemctl start nixos-upgrade --no-block
   '';
   locals = import /etc/nixos/local_settings.nix args;
   local_git_ssh_command = # here we want to check the GIT_SSH_COMMAND presence in local settings and use it for fetching config updates
@@ -46,6 +40,22 @@ in
         timeout --foreground 9m nixos_apply_script
         '';
     startAt = "*:0/10"; # run every 10 minutes
+  };
+
+  # once in a day, we are killing nixos-upgrade just to be sure, that there is no some stalled builds running
+  systemd.services.nixos-upgrade-stop = {
+    description = "stop possibly hanged nixos-upgrade service";
+    serviceConfig.Type = "oneshot";
+    path = [ pkgs.coreutils ];
+    script =
+        ''
+        set -e
+        RET=$(/run/current-system/sw/bin/systemctl is-failed nixos-upgrade || true)
+        if [ "$RET" == "activating" ] || [ "$RET" == "active" ]; then
+          /run/current-system/sw/bin/systemctl stop nixos-upgrade
+        fi
+        '';
+    startAt = "*-*-* 21:59:00"; # run every day at midnight
   };
 
   # now enable auto upgrade option, that will upgrade system for us
