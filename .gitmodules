@@ -1,0 +1,3 @@
+[submodule "overlays/mempool-overlay"]
+	path = overlays/mempool-overlay
+	url = https://github.com/dambaev/mempool-overlay.git
