@@ -12,7 +12,13 @@
       ./auto-apply-config.nix
       # import instance-local settings. Those settings rely on a local.hostname.nix so each separate instance of this repo should have separate host name.
       ./local_settings.nix
+      # here we import our mempool module, which defines `service.mempool.enable` option, which we will use below
+      ./overlays/mempool-overlay/module.nix
     ];
+
+  # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
+  service.mempool.enable = true;
+
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
