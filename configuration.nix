@@ -14,6 +14,8 @@
       ./local_settings.nix
       # here we import our mempool module, which defines `service.mempool.enable` option, which we will use below
       ./overlays/mempool-overlay/module.nix
+      # custom module for already existing electrs derivation
+      ./overlays/electrs-overlay/module.nix
     ];
 
   # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
