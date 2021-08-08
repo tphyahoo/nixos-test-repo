@@ -19,7 +19,41 @@
     ];
 
   # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
-  services.mempool.enable = true;
+  services.mempool = {
+    enable = true;
+    config = ''
+      {
+        "MEMPOOL": {
+          "NETWORK": "mainnet",
+          "BACKEND": "electrum",
+          "HTTP_PORT": 8999,
+          "API_URL_PREFIX": "/api/v1/",
+          "POLL_RATE_MS": 2000
+        },
+        "CORE_RPC": {
+          "USERNAME": "mempool",
+          "PASSWORD": "71b61986da5b03a5694d7c7d5165ece5"
+        },
+        "ELECTRUM": {
+          "HOST": "127.0.0.1",
+          "PORT": 50002,
+          "TLS_ENABLED": true,
+        },
+        "DATABASE": {
+          "ENABLED": true,
+          "HOST": "127.0.0.1",
+          "PORT": 3306,
+          "USERNAME": "mempool",
+          "PASSWORD": "mempool",
+          "DATABASE": "mempool"
+        },
+        "STATISTICS": {
+          "ENABLED": true,
+          "TX_PER_SECOND_SAMPLE_PERIOD": 150
+        }
+      }
+    '';
+  };
 
 
   # Use the GRUB 2 boot loader.
