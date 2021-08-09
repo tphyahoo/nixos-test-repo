@@ -54,6 +54,19 @@
       }
     '';
   };
+  services.bitcoind.mempool = {
+    enable = true;
+    dataDir = "/data/bitcoin-mempool"; # move the data into a separate volume, see hardware-configuration.nix for mount points
+    extraConfig = ''
+      txindex = 1
+    '';
+    rpc.users = {
+      mempool = {
+        name = "mempool";
+        passwordHMAC = "e85b8cd1bbfd7a4500053b4159092990$7941d89fc530a2a40faaa2073f6355f7e17821fac438827d62fd5e78b48938a9";
+      };
+    };
+  };
 
 
   # Use the GRUB 2 boot loader.
