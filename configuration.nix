@@ -36,8 +36,8 @@
         },
         "ELECTRUM": {
           "HOST": "127.0.0.1",
-          "PORT": 50002,
-          "TLS_ENABLED": true
+          "PORT": 50001,
+          "TLS_ENABLED": false
         },
         "DATABASE": {
           "ENABLED": true,
@@ -54,6 +54,13 @@
       }
     '';
   };
+
+  # enable electrs service
+  services.electrs = {
+    enable = true;
+    db_dir = "/data/electrs_db"; # /data/ is a separate volume
+  };
+
   services.bitcoind.mempool = {
     enable = true;
     dataDir = "/data/bitcoin-mempool"; # move the data into a separate volume, see hardware-configuration.nix for mount points
