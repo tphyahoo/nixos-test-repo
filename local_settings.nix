@@ -4,13 +4,7 @@ let
   zabbix_server = import ./local.zabbix_server.nix; # get the IP of the zabbix server
   # default config, dependent on hostnames
   default_config = {
-#    networking.hostName = hostname;
-#    services.zabbixAgent = {
-#      server = zabbix_server;
-#      settings = {
-#        Hostname = hostname;
-#      };
-#    };
+    networking.hostName = hostname;
   };
   build_config = all_configs:
     if lib.hasAttrByPath [ hostname ] all_configs
