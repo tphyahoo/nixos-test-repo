@@ -59,6 +59,7 @@
   services.electrs = {
     enable = true;
     db_dir = "/data/electrs_db"; # /data/ is a separate volume
+    cookie_file = "/data/bitcoind-mempool/.cookie";
   };
 
   services.bitcoind.mempool = {
