@@ -19,7 +19,7 @@
     ];
 
   # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
-  services.mempool = {
+  services.mempool-backend = {
     enable = true;
     config = ''
       {
