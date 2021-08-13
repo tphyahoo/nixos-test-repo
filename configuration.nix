@@ -54,6 +54,10 @@
       }
     '';
   };
+  # enable mempool-frontend service
+  services.mempool-frontend = {
+    enable = true;
+  };
 
   # enable electrs service
   services.electrs = {
