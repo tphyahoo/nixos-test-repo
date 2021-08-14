@@ -103,25 +103,7 @@
     "net.ipv4.ip_forward" = 1;
   };
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    22
-    80
-  ];
-  # temporary for uploading nixos image to another DO account.
-  services.nginx = {
-    enable = true;
-    virtualHosts = {
-      default = {
-        root = "/data/www/default";
-        default = true;
-        listen = [
-          { addr = "0.0.0.0";
-            port = 80;
-          }
-        ];
-      };
-    };
-  };
+  networking.firewall.allowedTCPPorts = [ 22 ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = true;
