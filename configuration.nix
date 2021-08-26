@@ -4,6 +4,13 @@
 
 { config, pkgs, options, ... }@args:
 
+let
+  # import psk from out-of-git file
+  # TODO: switch to secrets-manager and change to make it more secure
+  bitcoind-mainnet-rpc-psk = builtins.readFile "./private/bitcoind-mainnet-rpc-psk.txt";
+  # TODO: refactor to autogenerate HMAC from the password above
+  bitcoind-mainnet-rpc-pskhmac = builtins.readFile "./private/bitcoind-mainnet-rpc-pskhmac.txt";
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -32,7 +39,7 @@
         },
         "CORE_RPC": {
           "USERNAME": "mempool",
-          "PASSWORD": "71b61986da5b03a5694d7c7d5165ece5"
+          "PASSWORD": "${bitcoind-mainnet-rpc-psk}"
         },
         "ELECTRUM": {
           "HOST": "127.0.0.1",
@@ -76,7 +83,7 @@
     rpc.users = {
       mempool = {
         name = "mempool";
-        passwordHMAC = "e85b8cd1bbfd7a4500053b4159092990$7941d89fc530a2a40faaa2073f6355f7e17821fac438827d62fd5e78b48938a9";
+        passwordHMAC = "${bitcoind-mainnet-rpc-pskhmac}";
       };
     };
   };
