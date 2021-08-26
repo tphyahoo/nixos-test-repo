@@ -10,6 +10,7 @@ let
   bitcoind-mainnet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-psk.txt";
   # TODO: refactor to autogenerate HMAC from the password above
   bitcoind-mainnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-pskhmac.txt";
+  mempool-db-psk-mainnet = builtins.readFile "/etc/nixos/private/mempool-db-psk-mainnet.txt";
 in
 {
   imports =
@@ -28,6 +29,7 @@ in
   # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
   services.mempool-backend = {
     enable = true;
+    db_psk = mempool-db-psk-mainnet;
     config = ''
       {
         "MEMPOOL": {
@@ -52,7 +54,7 @@ in
           "PORT": 3306,
           "USERNAME": "mempool",
           "PASSWORD": "mempool",
-          "DATABASE": "mempool"
+          "DATABASE": "${mempool-db-psk-mainnet}"
         },
         "STATISTICS": {
           "ENABLED": true,
