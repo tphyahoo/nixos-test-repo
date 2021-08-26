@@ -7,9 +7,9 @@
 let
   # import psk from out-of-git file
   # TODO: switch to secrets-manager and change to make it more secure
-  bitcoind-mainnet-rpc-psk = builtins.readFile "./private/bitcoind-mainnet-rpc-psk.txt";
+  bitcoind-mainnet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-psk.txt";
   # TODO: refactor to autogenerate HMAC from the password above
-  bitcoind-mainnet-rpc-pskhmac = builtins.readFile "./private/bitcoind-mainnet-rpc-pskhmac.txt";
+  bitcoind-mainnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-pskhmac.txt";
 in
 {
   imports =
