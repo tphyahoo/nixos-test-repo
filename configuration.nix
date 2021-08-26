@@ -52,9 +52,9 @@ in
           "ENABLED": true,
           "HOST": "127.0.0.1",
           "PORT": 3306,
+          "DATABASE": "mempool",
           "USERNAME": "mempool",
-          "PASSWORD": "mempool",
-          "DATABASE": "${mempool-db-psk-mainnet}"
+          "PASSWORD": "${mempool-db-psk-mainnet}"
         },
         "STATISTICS": {
           "ENABLED": true,
