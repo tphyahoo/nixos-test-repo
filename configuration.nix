@@ -71,7 +71,6 @@ in
   # enable electrs service
   services.electrs = {
     mainnet = {
-      enable = true;
       db_dir = "/data1/electrs_db"; # /data/ is a separate volume
       cookie_file = "/data/bitcoin-mempool/.cookie";
       blocks_dir = "/data/bitcoin-mempool/blocks";
