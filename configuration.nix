@@ -28,40 +28,43 @@ in
 
   # and here we are enabling mempool service. this option is being defined in `./overlays/mempool-overlay/module.nix`
   services.mempool-backend = {
-    enable = true;
-    db_psk = mempool-db-psk-mainnet;
-    config = ''
-      {
-        "MEMPOOL": {
-          "NETWORK": "mainnet",
-          "BACKEND": "electrum",
-          "HTTP_PORT": 8999,
-          "API_URL_PREFIX": "/api/v1/",
-          "POLL_RATE_MS": 2000
-        },
-        "CORE_RPC": {
-          "USERNAME": "mempool",
-          "PASSWORD": "${bitcoind-mainnet-rpc-psk}"
-        },
-        "ELECTRUM": {
-          "HOST": "127.0.0.1",
-          "PORT": 50001,
-          "TLS_ENABLED": false
-        },
-        "DATABASE": {
-          "ENABLED": true,
-          "HOST": "127.0.0.1",
-          "PORT": 3306,
-          "DATABASE": "mempool",
-          "USERNAME": "mempool",
-          "PASSWORD": "${mempool-db-psk-mainnet}"
-        },
-        "STATISTICS": {
-          "ENABLED": true,
-          "TX_PER_SECOND_SAMPLE_PERIOD": 150
+    mainnet = {
+      db_user = "mempool";
+      db_name = "mempool";
+      db_psk = mempool-db-psk-mainnet;
+      config = ''
+        {
+          "MEMPOOL": {
+            "NETWORK": "mainnet",
+            "BACKEND": "electrum",
+            "HTTP_PORT": 8999,
+            "API_URL_PREFIX": "/api/v1/",
+            "POLL_RATE_MS": 2000
+          },
+          "CORE_RPC": {
+            "USERNAME": "mempool",
+            "PASSWORD": "${bitcoind-mainnet-rpc-psk}"
+          },
+          "ELECTRUM": {
+            "HOST": "127.0.0.1",
+            "PORT": 50001,
+            "TLS_ENABLED": false
+          },
+          "DATABASE": {
+            "ENABLED": true,
+            "HOST": "127.0.0.1",
+            "PORT": 3306,
+            "DATABASE": "mempool",
+            "USERNAME": "mempool",
+            "PASSWORD": "${mempool-db-psk-mainnet}"
+          },
+          "STATISTICS": {
+            "ENABLED": true,
+            "TX_PER_SECOND_SAMPLE_PERIOD": 150
+          }
         }
-      }
-    '';
+      '';
+    };
   };
   # enable mempool-frontend service
   services.mempool-frontend = {
