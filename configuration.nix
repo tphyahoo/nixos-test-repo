@@ -85,6 +85,7 @@ in
       cookie_file = "/mnt/bitcoind-testnet/testnet3/.cookie";
       blocks_dir = "/mnt/bitcoind-testnet/testnet3/blocks";
       network = "testnet";
+      rpc_listen = "127.0.0.1:60001";
     };
   };
 
