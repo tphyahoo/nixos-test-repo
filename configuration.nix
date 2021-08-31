@@ -99,7 +99,7 @@ in
   services.bitcoind.testnet = {
     enable = true;
     dataDir = "/mnt/bitcoind-testnet";
-    testnet = 1;
+    testnet = true;
     extraConfig = ''
       txindex = 1
     '';
