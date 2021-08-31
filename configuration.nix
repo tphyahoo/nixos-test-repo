@@ -80,6 +80,12 @@ in
       cookie_file = "/data/bitcoin-mempool/.cookie";
       blocks_dir = "/data/bitcoin-mempool/blocks";
     };
+    testnet = { # testnet instance
+      db_dir = "/mnt/electrs-testnet";
+      cookie_file = "/mnt/bitcoind-testnet/testnet3/.cookie";
+      blocks_dir = "/mnt/bitcoind-testnet/testnet3/blocks";
+      network = "testnet";
+    };
   };
 
   services.bitcoind.mempool = {
