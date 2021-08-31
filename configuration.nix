@@ -8,8 +8,10 @@ let
   # import psk from out-of-git file
   # TODO: switch to secrets-manager and change to make it more secure
   bitcoind-mainnet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-psk.txt";
+  bitcoind-testnet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-testnet-rpc-psk.txt";
   # TODO: refactor to autogenerate HMAC from the password above
   bitcoind-mainnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-pskhmac.txt";
+  bitcoind-testnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-testnet-rpc-pskhmac.txt";
   mempool-db-psk-mainnet = builtins.readFile "/etc/nixos/private/mempool-db-psk-mainnet.txt";
 in
 {
@@ -90,6 +92,21 @@ in
       mempool = {
         name = "mempool";
         passwordHMAC = "${bitcoind-mainnet-rpc-pskhmac}";
+      };
+    };
+  };
+  # bitcoind testnet instance
+  services.bitcoind.testnet = {
+    enable = true;
+    dataDir = "/mnt/bitcoind-testnet";
+    testnet = 1;
+    extraConfig = ''
+      txindex = 1
+    '';
+    rpc.users = {
+      tmempool = {
+        name = "tmempool";
+        passwordHMAC = "${bitcoind-testnet-pskhmac}";
       };
     };
   };
