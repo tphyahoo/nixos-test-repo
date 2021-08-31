@@ -71,6 +71,7 @@ in
   # enable mempool-frontend service
   services.mempool-frontend = {
     enable = true;
+    testnet_enabled = true;
   };
 
   # enable electrs service
