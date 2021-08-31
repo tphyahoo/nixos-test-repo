@@ -106,7 +106,7 @@ in
     rpc.users = {
       tmempool = {
         name = "tmempool";
-        passwordHMAC = "${bitcoind-testnet-pskhmac}";
+        passwordHMAC = "${bitcoind-testnet-rpc-pskhmac}";
       };
     };
   };
