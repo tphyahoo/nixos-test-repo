@@ -164,9 +164,9 @@ in
   services.bitcoind.signet = {
     enable = true;
     dataDir = "/mnt/bitcoind-signet";
-    signet = true;
     extraConfig = ''
       txindex = 1
+      signet = 1
     '';
     rpc.users = {
       smempool = {
