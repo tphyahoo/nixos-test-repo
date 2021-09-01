@@ -82,7 +82,7 @@ in
             "POLL_RATE_MS": 2000
           },
           "CORE_RPC": {
-            "USERNAME": "mempool",
+            "USERNAME": "tmempool",
             "PASSWORD": "${bitcoind-testnet-rpc-psk}",
             "PORT": 18332
           },
@@ -95,8 +95,8 @@ in
             "ENABLED": true,
             "HOST": "127.0.0.1",
             "PORT": 3306,
-            "DATABASE": "mempool",
-            "USERNAME": "mempool",
+            "DATABASE": "tmempool",
+            "USERNAME": "tmempool",
             "PASSWORD": "${mempool-db-psk-testnet}"
           },
           "STATISTICS": {
