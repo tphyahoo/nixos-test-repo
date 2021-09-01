@@ -136,7 +136,7 @@ in
       blocks_dir = "/mnt/bitcoind-signet/signet/blocks";
       network = "signet";
       rpc_listen = "127.0.0.1:60601";
-      daemon_rpc_addr = "127.0.0.1:38334";
+      daemon_rpc_addr = "127.0.0.1:38332";
     };
   };
 
