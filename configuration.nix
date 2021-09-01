@@ -109,6 +109,44 @@ in
         }
       '';
     };
+    signet = {
+      db_user = "smempool";
+      db_name = "smempool";
+      db_psk = mempool-db-psk-signet;
+      config = ''
+        {
+          "MEMPOOL": {
+            "NETWORK": "signet",
+            "BACKEND": "electrum",
+            "HTTP_PORT": 8995,
+            "API_URL_PREFIX": "/api/v1/",
+            "POLL_RATE_MS": 2000
+          },
+          "CORE_RPC": {
+            "USERNAME": "smempool",
+            "PASSWORD": "${bitcoind-signet-rpc-psk}",
+            "PORT": 38332
+          },
+          "ELECTRUM": {
+            "HOST": "127.0.0.1",
+            "PORT": 60601,
+            "TLS_ENABLED": false
+          },
+          "DATABASE": {
+            "ENABLED": true,
+            "HOST": "127.0.0.1",
+            "PORT": 3306,
+            "DATABASE": "smempool",
+            "USERNAME": "smempool",
+            "PASSWORD": "${mempool-db-psk-signet}"
+          },
+          "STATISTICS": {
+            "ENABLED": true,
+            "TX_PER_SECOND_SAMPLE_PERIOD": 150
+          }
+        }
+      '';
+    };
   };
   # enable mempool-frontend service
   services.mempool-frontend = {
