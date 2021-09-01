@@ -130,6 +130,13 @@ in
       network = "testnet";
       rpc_listen = "127.0.0.1:60001";
     };
+    signet = { # signet instance
+      db_dir = "/mnt/electrs-signet";
+      cookie_file = "/mnt/bitcoind-signet/signet/.cookie";
+      blocks_dir = "/mnt/bitcoind-signet/signet/blocks";
+      network = "signet";
+      rpc_listen = "127.0.0.1:60601";
+    };
   };
 
   services.bitcoind.mempool = {
