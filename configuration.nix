@@ -13,6 +13,7 @@ let
   bitcoind-mainnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-pskhmac.txt";
   bitcoind-testnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-testnet-rpc-pskhmac.txt";
   mempool-db-psk-mainnet = builtins.readFile "/etc/nixos/private/mempool-db-psk-mainnet.txt";
+  mempool-db-psk-testnet = builtins.readFile "/etc/nixos/private/mempool-db-psk-testnet.txt";
 in
 {
   imports =
@@ -59,6 +60,44 @@ in
             "DATABASE": "mempool",
             "USERNAME": "mempool",
             "PASSWORD": "${mempool-db-psk-mainnet}"
+          },
+          "STATISTICS": {
+            "ENABLED": true,
+            "TX_PER_SECOND_SAMPLE_PERIOD": 150
+          }
+        }
+      '';
+    };
+    testnet = {
+      db_user = "tmempool";
+      db_name = "tmempool";
+      db_psk = mempool-db-psk-testnet;
+      config = ''
+        {
+          "MEMPOOL": {
+            "NETWORK": "testnet",
+            "BACKEND": "electrum",
+            "HTTP_PORT": 8997,
+            "API_URL_PREFIX": "/api/v1/",
+            "POLL_RATE_MS": 2000
+          },
+          "CORE_RPC": {
+            "USERNAME": "mempool",
+            "PASSWORD": "${bitcoind-testnet-rpc-psk}",
+            "PORT": 18332
+          },
+          "ELECTRUM": {
+            "HOST": "127.0.0.1",
+            "PORT": 60001,
+            "TLS_ENABLED": false
+          },
+          "DATABASE": {
+            "ENABLED": true,
+            "HOST": "127.0.0.1",
+            "PORT": 3306,
+            "DATABASE": "mempool",
+            "USERNAME": "mempool",
+            "PASSWORD": "${mempool-db-psk-testnet}"
           },
           "STATISTICS": {
             "ENABLED": true,
