@@ -167,6 +167,7 @@ in
     extraConfig = ''
       txindex = 1
       signet = 1
+      [signet]
     '';
     rpc.users = {
       smempool = {
