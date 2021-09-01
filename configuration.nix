@@ -152,6 +152,7 @@ in
   services.mempool-frontend = {
     enable = true;
     testnet_enabled = true;
+    signet_enabled = true;
   };
 
   # enable electrs service
