@@ -9,11 +9,14 @@ let
   # TODO: switch to secrets-manager and change to make it more secure
   bitcoind-mainnet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-psk.txt";
   bitcoind-testnet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-testnet-rpc-psk.txt";
+  bitcoind-signet-rpc-psk = builtins.readFile "/etc/nixos/private/bitcoind-signet-rpc-psk.txt";
   # TODO: refactor to autogenerate HMAC from the password above
   bitcoind-mainnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-mainnet-rpc-pskhmac.txt";
   bitcoind-testnet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-testnet-rpc-pskhmac.txt";
+  bitcoind-signet-rpc-pskhmac = builtins.readFile "/etc/nixos/private/bitcoind-signet-rpc-pskhmac.txt";
   mempool-db-psk-mainnet = builtins.readFile "/etc/nixos/private/mempool-db-psk-mainnet.txt";
   mempool-db-psk-testnet = builtins.readFile "/etc/nixos/private/mempool-db-psk-testnet.txt";
+  mempool-db-psk-signet = builtins.readFile "/etc/nixos/private/mempool-db-psk-signet.txt";
 in
 {
   imports =
@@ -154,6 +157,21 @@ in
       tmempool = {
         name = "tmempool";
         passwordHMAC = "${bitcoind-testnet-rpc-pskhmac}";
+      };
+    };
+  };
+  # bitcoind signet instance
+  services.bitcoind.signet = {
+    enable = true;
+    dataDir = "/mnt/bitcoind-signet";
+    signet = true;
+    extraConfig = ''
+      txindex = 1
+    '';
+    rpc.users = {
+      smempool = {
+        name = "smempool";
+        passwordHMAC = "${bitcoind-signet-rpc-pskhmac}";
       };
     };
   };
