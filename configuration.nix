@@ -179,7 +179,7 @@ in
     };
   };
 
-  services.bitcoind.mempool = {
+  services.bitcoind.mainnet = {
     enable = true;
     dataDir = "/data/bitcoin-mempool"; # move the data into a separate volume, see hardware-configuration.nix for mount points
     extraConfig = ''
