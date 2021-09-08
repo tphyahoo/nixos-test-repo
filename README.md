@@ -1,10 +1,14 @@
 # Brief
 
-This repo contains nixos configuration for showcase of NixOS
+This repo contains nixos configuration for showcase of NixOS. NixOS is following the goal to perform whole OS config in one configuration file. In order to achieve this, NixOS relies on:
+1. a "pure" language 'Nix';
+2. a package manager 'nix', which goal is to make build process to be referential transparent (ie, to use only defined dependencies in order to produce the result);
+3. modeling a whole system as a 'set' of options.
+
 
 # Structure
 
-NixOS is following goal to perform whole OS config in one configuration file. But still, NixOS allows us to import configuration files ("nix expressions"), so we can split configuration in modules and import them with `imports` option.
+NixOS allows us to import configuration files ("nix expressions"), so we can split configuration in modules and import them with `imports` option.
 
 So there are those configuration files used:
 
@@ -16,4 +20,13 @@ So there are those configuration files used:
 
 # Submodules
 
-`overlays/mempool-overlay` is a git submodule 
+`overlays/mempool-overlay` is a git submodule, which contains an extension to NixOS configuration options, which adds possibility to build and enable mempool-backend instances and mempool-frontend as well. 
+`overlays/electrs-overlay` is a git submodule, which contains an extension to NixOS configuration options, which adds possibility to build and enable electrs instances
+
+# Difference with mempool's production how-to
+
+Mempool developers provide example of configs, that are being used for production instance of the mempool.space. Here goes a list of things, that are different from those production examples:
+
+## electrs
+
+the original Mempool's README defines a `Electrum Server (romanz/electrs)` as a dependency, but the production example is using `Blockstream/electrs`, which is the fork of the former. There are differences with arguments support between them. We are using `Electrum Server (romanz/electrs)` and there is a NixOS overlay for it: https://github.com/dambaev/electrs-overlay
