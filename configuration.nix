@@ -45,7 +45,8 @@ in
             "BACKEND": "electrum",
             "HTTP_PORT": 8999,
             "API_URL_PREFIX": "/api/v1/",
-            "POLL_RATE_MS": 2000
+            "POLL_RATE_MS": 2000,
+            "CLEAR_PROTECTION_MINUTES": 5
           },
           "CORE_RPC": {
             "USERNAME": "mempool",
