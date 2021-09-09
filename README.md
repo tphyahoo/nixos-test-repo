@@ -30,3 +30,27 @@ Mempool developers provide example of configs, that are being used for productio
 ## electrs
 
 the original Mempool's README defines a `Electrum Server (romanz/electrs)` as a dependency, but the production example is using `Blockstream/electrs`, which is the fork of the former. There are differences with arguments support between them. We are using `Electrum Server (romanz/electrs)` and there is a NixOS overlay for it: https://github.com/dambaev/electrs-overlay
+
+## Hardware configuration
+
+Production how to defines a hardware configuration of the node, which may be considered as an example instead of mandatory.
+
+## Tor
+
+we are not using `tor` at the moment
+
+## Bitcoin core
+
+We are not using options:
+- dbcache=3700: because, this affects amount of RAM cache, so this value is expected to be fine-tuned on a node with fixed resources
+- maxconnections=1337: because at the moment we are only use outbound connections, which are limited to 11. Affects RAM footprint as well.
+
+## Elements
+
+We don't use Elements Core at the moment
+
+## Mempool configs
+
+- `"MINED_BLOCKS_CACHE": 144` - we don't use such option, because there is no such option in https://github.com/mempool/mempool/blob/master/backend/src/config.ts, as it was removed in Oct 2020;
+- `"SPAWN_CLUSTER_PROCS": 0` - as  this value is the default value;
+
