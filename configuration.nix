@@ -184,6 +184,16 @@ in
     dataDir = "/data/bitcoin-mempool"; # move the data into a separate volume, see hardware-configuration.nix for mount points
     extraConfig = ''
       txindex = 1
+      server=1
+      listen=1
+      discover=1
+      rpcallowip=127.0.0.1
+      # those option affects memory footprint of the instance, so changing the default value
+      # will affect the ability to shrink the node's resources.
+      # default value is 450 MiB
+      # dbcache=3700
+      # default value is 125, affects RAM occupation
+      # maxconnections=1337
     '';
     rpc.users = {
       mempool = {
@@ -199,6 +209,16 @@ in
     testnet = true;
     extraConfig = ''
       txindex = 1
+      server=1
+      listen=1
+      discover=1
+      rpcallowip=127.0.0.1
+      # those option affects memory footprint of the instance, so changing the default value
+      # will affect the ability to shrink the node's resources.
+      # default value is 450 MiB
+      # dbcache=3700
+      # default value is 125, affects RAM occupation
+      # maxconnections=1337
     '';
     rpc.users = {
       tmempool = {
@@ -213,6 +233,16 @@ in
     dataDir = "/mnt/bitcoind-signet";
     extraConfig = ''
       txindex = 1
+      server=1
+      listen=1
+      discover=1
+      rpcallowip=127.0.0.1
+      # those option affects memory footprint of the instance, so changing the default value
+      # will affect the ability to shrink the node's resources.
+      # default value is 450 MiB
+      # dbcache=3700
+      # default value is 125, affects RAM occupation
+      # maxconnections=1337
       signet = 1
       [signet]
     '';
