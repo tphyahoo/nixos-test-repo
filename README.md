@@ -54,3 +54,8 @@ We don't use Elements Core at the moment
 - `"MINED_BLOCKS_CACHE": 144` - we don't use such option, because there is no such option in https://github.com/mempool/mempool/blob/master/backend/src/config.ts, as it was removed in Oct 2020;
 - `"SPAWN_CLUSTER_PROCS": 0` - as  this value is the default value;
 
+## Nginx configs
+
+At the moment, we are reusing the same nginx config, that had been provided by mempool's developers with addition of enabling per-network routing, dependently on enabled networks. The only difference is that we split this config into parts in order to use those parts for specifying in appropriate nixos options for nginx.
+
+At the same time, production how to uses additional nginx features, like rate-limiting of the requests, which we are not using (at least yet)
