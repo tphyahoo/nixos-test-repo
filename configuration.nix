@@ -159,9 +159,9 @@ in
   # enable electrs service
   services.electrs = {
     mainnet = {
-      db_dir = "/data1/electrs_db"; # /data/ is a separate volume
-      cookie_file = "/data/bitcoin-mempool/.cookie";
-      blocks_dir = "/data/bitcoin-mempool/blocks";
+      db_dir = "/mnt/electrs-mainnet/electrs_db";
+      cookie_file = "/mnt/bitcoind-mainnet/bitcoind-mainnet/.cookie";
+      blocks_dir = "/mnt/bitcoind-mainnet/bitcoind-mainnet/blocks";
     };
     testnet = { # testnet instance
       db_dir = "/mnt/electrs-testnet";
@@ -182,7 +182,7 @@ in
 
   services.bitcoind.mainnet = {
     enable = true;
-    dataDir = "/data/bitcoin-mempool"; # move the data into a separate volume, see hardware-configuration.nix for mount points
+    dataDir = "/mnt/bitcoind-mainnet/bitcoind-mainnet"; # move the data into a separate volume, see hardware-configuration.nix for mount points
     extraConfig = ''
       txindex = 1
       server=1
