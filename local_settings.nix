@@ -1,7 +1,6 @@
 {pkgs, lib, ...}@args:
 let
   hostname = import ./local.hostname.nix; # get the hostname of the current host
-  zabbix_server = import ./local.zabbix_server.nix; # get the IP of the zabbix server
   # default config, dependent on hostnames
   default_config = {
     networking.hostName = hostname;
