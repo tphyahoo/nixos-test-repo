@@ -80,7 +80,7 @@ Both options will achieve the result in 3 steps:
 
 2. select 'CentOS 8' distribution. (CentOS 8 uses XFS as a rootfs, which is more preferred for NixOS than Ext4 due to `/nix/store` could have a big amount of inodes, which Ext4 handles not so well);
 
-3. choose your plan. The more, the better, of course;
+3. choose your plan. The more, the better, of course, but initially, I recommend to choose the smallest, as it will create the smallest storage volume for droplet. It will be possible to resize CPU/RAM/Storage later and, in fact, we will do that at some point for CPU and RAM;
 
 4. 6 additional storage volumes will be needed for mempool setup, but droplet creation wizard does not allow to create more than 1 volume and/or select name for it. So, it will need to be done after droplet creation, but you need to confirm, that you are will create droplet in a datacenter, that support creating additional volumes.
 
@@ -164,7 +164,12 @@ echo '--- a/hardware-configuration.nix  2021-09-21 00:32:37.078564115 +0000
  ' | patch -p1  -d /etc/nixos/
 ```
 
-5. build and apply configuration with `nixos-rebuild switch`.
+5. build and apply configuration with:
+
+```
+nixos-rebuild switch
+```
+
 
 Now you can confirm with `mount | grep --count /mnt`, that there are 6 mount points in the `/mnt`.
 
@@ -172,19 +177,25 @@ Now you can confirm with `mount | grep --count /mnt`, that there are 6 mount poi
 
 Now it is time to replace config of the fresh NixOS with config from the current repo. Fot this:
 
-1. login to the Droplet with droplet IP from DO dashboard:
+1. Resize droplet's CPU and RAM to at least 4 vCPUs and 8 GiB of RAM to perform an initial sync. For this:
+1.1. shutdown droplet;
+1.2. goto Droplet -> Resize droplet;
+1.3. choose approprite plan;
+1.4. start the droplet
+
+2. login to the Droplet with droplet IP from DO dashboard:
 
 ```
 ssh -A root@<droplet_IP>
 ```
 
-2. clone the repo with
+3. clone the repo with
 
 ```
 git clone --recursive https://github.com/dambaev/nixos-test-repo.git
 ```
 
-3. move the content of the repo into `/etc/nixos/`:
+4. move the content of the repo into `/etc/nixos/`:
 
 ```
 mv nixos-test-repo/* /etc/nixos/
@@ -199,22 +210,24 @@ git pull
 
 it should not report any errors
 
-4. fill the `/etc/nixos/local.hostname.nix` with hostname:
+5. fill the `/etc/nixos/local.hostname.nix` with hostname:
 
 ```
 echo "\"$(hostname)\"" > /etc/nixos/local.hostname.nix
 ```
 
-5. generate secrets for bitcoin rpc and dbs:
+6. generate secrets for bitcoin rpc and dbs:
 
 ```
 /etc/nixos/gen-psk.sh
 ```
 
-6. rebuild and apply config:
+7. rebuild and apply config:
 
 ```
 nixos-rebuild switch
 ```
 
 WARNING: currently, this step will replace os users and their public ssh keys
+
+8. now wait for bitcoind and electrs instances to sync the data and you can resize the droplet back to your load
