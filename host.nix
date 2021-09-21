@@ -20,8 +20,7 @@ let
 in
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+    [ 
       # this module setups automatic applying of configuration, pulled from git
       ./auto-apply-config.nix
       # import instance-local settings. Those settings rely on a local.hostname.nix so each separate instance of this repo should have separate host name.
@@ -254,11 +253,6 @@ in
       };
     };
   };
-
-
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.version = 2;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget

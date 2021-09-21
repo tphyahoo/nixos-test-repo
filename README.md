@@ -59,3 +59,162 @@ We don't use Elements Core at the moment
 At the moment, we are reusing the same nginx config, that had been provided by mempool's developers with addition of enabling per-network routing, dependently on enabled networks. The only difference is that we split this config into parts in order to use those parts for specifying in appropriate nixos options for nginx.
 
 At the same time, production how to uses additional nginx features, like rate-limiting of the requests, which we are not using (at least yet)
+
+# Deployment into DigitalOcean
+
+There are 2 options of deployment to DigitalOcean:
+
+1. through the NixOS being uploaded to DO as a 'custom' image;
+2. taking over the another Linux distro with `nix-infect` ( https://github.com/elitak/nixos-infect );
+
+Both options will achieve the result in 3 steps:
+
+1. Initial OS takeover (to get clean NixOS running);
+2. attaching additional volumes; 
+3. deployment of the mempool instances on NixOS.
+
+
+## Taking over Debian droplet with `nix-infect`
+
+1. Goto 'Create' -> 'Droplet';
+
+2. select 'CentOS 8' distribution. (CentOS 8 uses XFS as a rootfs, which is more preferred for NixOS than Ext4 due to `/nix/store` could have a big amount of inodes, which Ext4 handles not so well);
+
+3. choose your plan. The more, the better, of course;
+
+4. 6 additional storage volumes will be needed for mempool setup, but droplet creation wizard does not allow to create more than 1 volume and/or select name for it. So, it will need to be done after droplet creation, but you need to confirm, that you are will create droplet in a datacenter, that support creating additional volumes.
+
+choose DC;
+
+5. In the "select additional options" form, select "user data" and paste this snippet in the appeared input:
+
+```
+#cloud-config
+write_files:
+- path: /etc/nixos/host.nix
+  permissions: '0644'
+  content: |
+    {pkgs, ...}:
+    {
+      environment.systemPackages = with pkgs; [ vim git python3 ];
+    }
+runcmd:
+  - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=digitalocean NIXOS_IMPORT=./host.nix NIX_CHANNEL=nixos-21.05 bash 2>&1 | tee /tmp/infect.log
+```
+
+7. select ssh keys, that will be used to access as a root user;
+
+8. select meaningful droplet name and tags;
+
+9. hit `Create Droplet`.
+
+The droplet will be created and then, DigitalOcean agent will start the process of taking over the OS. After that, droplet will be rebooted.
+
+After reboot, droplet will have running clean NixOS with selected ssh-keys and vim and git installed. 
+
+## Attaching additional volumes
+
+We need to add 6 more volumes (format: volume-name (volume-size)) :
+- bitcoind-mainnet (440 GiB);
+- electrs-mainnet ( 90 GiB);
+- bitcoind-testnet ( 40 GiB);
+- electrs-testnet ( 10 GiB);
+- bitcoind-signet ( 1 GiB);
+- electrs-signet ( 500 MiB).
+
+1. Go to "Volumes";
+2. for each volume, declared above do: 
+2.1. "Create volume";
+2.2. Enter appropriate name and size;
+2.3. choose the droplet to add to;
+2.4. choose "Automatically Format & Mount" and "XFS" as a file system;
+2.5. hit "Create Volume";
+3. Login into droplet with `ssh -A root@<droplet_IP>` and confirm, that it is already running NixOS:
+
+```
+cat /etc/os-release | grep NAME | grep NixOS
+```
+
+if not, you can track the process of taking over of OS with:
+
+```
+tail -f /tmp/infect.log
+```
+
+droplet should reboot when taking over will be finished. Then, you will need to clean the ssh fingerprint for this host with `ssh-keygen -R <droplet_IP` and relogin again with `ssh -A root@<droplet_IP>`;
+
+4. add appropriate mount points for created volumes with this command:
+
+```
+echo '--- a/hardware-configuration.nix  2021-09-21 00:32:37.078564115 +0000
++++ b/hardware-configuration.nix       2021-09-21 00:37:58.127504552 +0000
+@@ -3,5 +3,11 @@
+   imports = [ (modulesPath + "/profiles/qemu-guest.nix") ];
+   boot.loader.grub.device = "/dev/vda";
+   boot.initrd.kernelModules = [ "nvme" ];
+-  fileSystems."/" = { device = "/dev/vda1"; fsType = "xfs"; };
++  fileSystems."/" = { device = "/dev/vda1"; fsType = "xfs"; options = [ "noatime" "discard"]; };
++  fileSystems."/mnt/bitcoind-mainnet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_bitcoind-mainnet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
++  fileSystems."/mnt/electrs-mainnet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_electrs-mainnet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
++  fileSystems."/mnt/bitcoind-testnet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_bitcoind-testnet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
++  fileSystems."/mnt/electrs-testnet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_electrs-testnet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
++  fileSystems."/mnt/bitcoind-signet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_bitcoind-signet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
++  fileSystems."/mnt/electrs-signet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_electrs-signet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
+ }
+ ' | patch -p1  -d /etc/nixos/
+```
+
+5. build and apply configuration with `nixos-rebuild switch`.
+
+Now you can confirm with `mount | grep --count /mnt`, that there are 6 mount points in the `/mnt`.
+
+## Deployment of the mempool instances
+
+Now it is time to replace config of the fresh NixOS with config from the current repo. Fot this:
+
+1. login to the Droplet with droplet IP from DO dashboard:
+
+```
+ssh -A root@<droplet_IP>
+```
+
+2. clone the repo with
+
+```
+git clone --recursive https://github.com/dambaev/nixos-test-repo.git
+```
+
+3. move the content of the repo into `/etc/nixos/`:
+
+```
+mv nixos-test-repo/* /etc/nixos/
+mv nixos-test-repo/.git* /etc/nixos/
+```
+confirm, that `git` determines `/etc/nixos/` as a repo by doing:
+
+```
+cd /etc/nixos
+git pull
+```
+
+it should not report any errors
+
+4. fill the `/etc/nixos/local.hostname.nix` with hostname:
+
+```
+echo "\"$(hostname)\"" > /etc/nixos/local.hostname.nix
+```
+
+5. generate secrets for bitcoin rpc and dbs:
+
+```
+/etc/nixos/gen-psk.sh
+```
+
+6. rebuild and apply config:
+
+```
+nixos-rebuild switch
+```
+
+WARNING: currently, this step will replace os users and their public ssh keys
