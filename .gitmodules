@@ -1,7 +1,6 @@
 [submodule "overlays/mempool-overlay"]
 	path = overlays/mempool-overlay
 	url = https://github.com/dambaev/mempool-overlay.git
-	branch = nix-build-base-build
 [submodule "overlays/electrs-overlay"]
 	path = overlays/electrs-overlay
 	url = https://github.com/dambaev/electrs-overlay.git
