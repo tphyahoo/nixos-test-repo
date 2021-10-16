@@ -67,7 +67,7 @@ We need to add 6 more volumes (format: volume-name (volume-size)) :
 ## choose the droplet to add to;
 ## choose "Automatically Format & Mount" and "XFS" as a file system;
 ## hit "Create Volume";
-# Login into droplet with `ssh -A root@<droplet_IP>` and confirm, that it is already running NixOS:
+# Login into droplet with <pre> ssh -A root@<droplet_IP> </pre> and confirm, that it is already running NixOS:
 
 <pre>
 cat /etc/os-release | grep NAME | grep NixOS
