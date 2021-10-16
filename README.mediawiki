@@ -1,15 +1,14 @@
 = Deployment into DigitalOcean =
 
-There are 2 options of deployment to DigitalOcean:
+This manual describes how to install op-energy-exchange with nixos, onto digital ocean, by taking over the another Linux distro with nix-infect ( https://github.com/elitak/nixos-infect ).
 
-1. through the NixOS being uploaded to DO as a 'custom' image;
-2. taking over the another Linux distro with nix-infect ( https://github.com/elitak/nixos-infect );
-
-Both options will achieve the result in 3 steps:
+There are basically 3 steps to this:
 
 # Initial OS takeover (to get clean NixOS running);
 # attaching additional volumes; 
 # deployment of the mempool instances on NixOS.
+
+As a side note, an alternative way to deploy on digital ocean would be to upload custom image. There would be same 3 steps.
 
 
 == Taking over Debian droplet with nix-infect ==
