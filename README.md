@@ -20,7 +20,7 @@ So there are those configuration files used:
 
 `os-users.nix` - contains set of users, that are allowed to access NixOS instance by ssh-public-key.
 
-`overlays/` - directory, which is supposed to contain number of git submodules with nix-expressions, which are supposed to be imported from `host.nix`.
+`overlays/` - directory, which is supposed to contain number of git submodules with nix-expressions.
 
 # Submodules
 
