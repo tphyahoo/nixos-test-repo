@@ -129,13 +129,13 @@ Now it is time to replace config of the fresh NixOS with config from the current
 ssh -A root@<droplet_IP>
 </pre>
 
-# clone the repo with
+## clone the repo with
 
 <pre>
 git clone --recursive https://github.com/dambaev/nixos-test-repo.git
 </pre>
 
-# move the content of the repo into <pre> /etc/nixos/ </pre>
+## move the content of the repo into <pre> /etc/nixos/ </pre>
 
 <pre>
 mv nixos-test-repo/* /etc/nixos/
