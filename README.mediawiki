@@ -111,7 +111,7 @@ nixos-rebuild switch
 </pre>
 
 
-Now you can confirm with <pre> mount | grep --count /mnt </pre>, that there are 6 mount points in the '''/mnt'''.
+Now you can confirm with <pre> mount | grep --count /mnt </pre> that there are 6 mount points in the '''/mnt'''.
 
 == Deployment of the mempool instances ==
 
