@@ -12,7 +12,11 @@ NixOS allows us to import configuration files ("nix expressions"), so we can spl
 
 So there are those configuration files used:
 
-`host.nix` - this is the 'main' configuration module in NixOS. All other modules are being imported from this file.
+`host.nix` - this is the entry point configuration module in NixOS. 
+
+See "taking-over-debian-droplet-with-nix-infect" section below for how this is communicated to digital ocean droplet in deployment.
+
+All other modules are being imported from this file.
 
 `auto-apply-config.nix` - contains routine for performing automatical fetching config from git repo, building and switching to this configuration.
 
