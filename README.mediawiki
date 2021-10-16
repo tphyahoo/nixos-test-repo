@@ -79,7 +79,9 @@ if not, you can track the process of taking over of OS with:
 tail -f /tmp/infect.log
 </pre>
 
-droplet should reboot when taking over will be finished. Then, you will need to clean the ssh fingerprint for this host with `ssh-keygen -R <droplet_IP` and relogin again with `ssh -A root@<droplet_IP>`;
+droplet should reboot when taking over will be finished. Then, you will need to clean the ssh fingerprint for this host with 
+
+<pre>ssh-keygen -R <droplet_IP</pre> and relogin again with <pre>ssh -A root@<droplet_IP></pre>
 
 4. add appropriate mount points for created volumes with this command:
 
@@ -109,7 +111,7 @@ nixos-rebuild switch
 </pre>
 
 
-Now you can confirm with `mount | grep --count /mnt`, that there are 6 mount points in the `/mnt`.
+Now you can confirm with <pre> mount | grep --count /mnt </pre>, that there are 6 mount points in the <pre> /mnt </pre>.
 
 == Deployment of the mempool instances ==
 
