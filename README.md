@@ -171,7 +171,9 @@ WARNING: currently, this step will replace os users and their public ssh keys
 8. now wait for bitcoind and electrs instances to sync the data and you can resize the droplet back to your load
 
 
-# Brief
+# Nixos Information
+
+## What is Nixos
 
 This repo contains nixos configuration for showcase of NixOS. NixOS is following the goal to perform whole OS config in one configuration file. In order to achieve this, NixOS relies on:
 1. a "pure" language 'Nix';
@@ -179,7 +181,7 @@ This repo contains nixos configuration for showcase of NixOS. NixOS is following
 3. modeling a whole system as a 'set' of options.
 
 
-# Structure
+## Structure
 
 NixOS allows us to import configuration files ("nix expressions"), so we can split configuration in modules and import them with `imports` option.
 
@@ -199,7 +201,7 @@ All other modules are being imported from this file.
 
 `overlays/` - directory, which is supposed to contain number of git submodules with nix-expressions.
 
-# Submodules
+## Submodules
 
 `overlays/mempool-overlay` is a git submodule, which contains an extension to NixOS configuration options, which adds possibility to build and enable mempool-backend instances and mempool-frontend as well. 
 `overlays/electrs-overlay` is a git submodule, which contains an extension to NixOS configuration options, which adds possibility to build and enable electrs instances
