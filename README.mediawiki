@@ -20,9 +20,7 @@ Both options will achieve the result in 3 steps:
 
 # choose your plan. The more, the better, of course, but initially, I recommend to choose the smallest, as it will create the smallest storage volume for droplet. It will be possible to resize CPU/RAM/Storage later and, in fact, we will do that at some point for CPU and RAM;
 
-# 6 additional storage volumes will be needed for mempool setup, but droplet creation wizard does not allow to create more than 1 volume and/or select name for it. So, it will need to be done after droplet creation, but you need to confirm, that you are will create droplet in a datacenter, that support creating additional volumes.
-
-choose DC;
+# 6 additional storage volumes will be needed for mempool setup, but droplet creation wizard does not allow to create more than 1 volume and/or select name for it. So, it will need to be done after droplet creation, but you need to confirm, that you are will create droplet in a datacenter, that support creating additional volumes. Choose DC.
 
 # In the "select additional options" form, select "user data" and paste this snippet in the appeared input:
 
