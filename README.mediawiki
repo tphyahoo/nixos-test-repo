@@ -53,21 +53,21 @@ After reboot, droplet will have running clean NixOS with selected ssh-keys and v
 == Attaching additional volumes ==
 
 We need to add 6 more volumes (format: volume-name (volume-size)) :
-- bitcoind-mainnet (440 GiB);
-- electrs-mainnet ( 90 GiB);
-- bitcoind-testnet ( 40 GiB);
-- electrs-testnet ( 10 GiB);
-- bitcoind-signet ( 1 GiB);
-- electrs-signet ( 500 MiB).
+* bitcoind-mainnet (440 GiB);
+* electrs-mainnet ( 90 GiB);
+* bitcoind-testnet ( 40 GiB);
+* electrs-testnet ( 10 GiB);
+* bitcoind-signet ( 1 GiB);
+* electrs-signet ( 500 MiB).
 
-1. Go to "Volumes";
-2. for each volume, declared above do: 
-2.1. "Create volume";
-2.2. Enter appropriate name and size;
-2.3. choose the droplet to add to;
-2.4. choose "Automatically Format & Mount" and "XFS" as a file system;
-2.5. hit "Create Volume";
-3. Login into droplet with `ssh -A root@<droplet_IP>` and confirm, that it is already running NixOS:
+# Go to "Volumes"
+# for each volume, declared above do: 
+## "Create volume";
+## Enter appropriate name and size;
+## choose the droplet to add to;
+## choose "Automatically Format & Mount" and "XFS" as a file system;
+## hit "Create Volume";
+# Login into droplet with `ssh -A root@<droplet_IP>` and confirm, that it is already running NixOS:
 
 <pre>
 cat /etc/os-release | grep NAME | grep NixOS
