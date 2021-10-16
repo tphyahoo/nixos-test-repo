@@ -1,4 +1,4 @@
-# Deployment into DigitalOcean
+= Deployment into DigitalOcean =
 
 There are 2 options of deployment to DigitalOcean:
 
@@ -12,7 +12,7 @@ Both options will achieve the result in 3 steps:
 3. deployment of the mempool instances on NixOS.
 
 
-## Taking over Debian droplet with `nix-infect`
+== Taking over Debian droplet with `nix-infect` ==
 
 1. Goto 'Create' -> 'Droplet';
 
@@ -50,7 +50,7 @@ The droplet will be created and then, DigitalOcean agent will start the process 
 
 After reboot, droplet will have running clean NixOS with selected ssh-keys and vim and git installed. 
 
-## Attaching additional volumes
+== Attaching additional volumes ==
 
 We need to add 6 more volumes (format: volume-name (volume-size)) :
 - bitcoind-mainnet (440 GiB);
@@ -111,7 +111,7 @@ nixos-rebuild switch
 
 Now you can confirm with `mount | grep --count /mnt`, that there are 6 mount points in the `/mnt`.
 
-## Deployment of the mempool instances
+== Deployment of the mempool instances ==
 
 Now it is time to replace config of the fresh NixOS with config from the current repo. Fot this:
 
@@ -171,9 +171,9 @@ WARNING: currently, this step will replace os users and their public ssh keys
 8. now wait for bitcoind and electrs instances to sync the data and you can resize the droplet back to your load
 
 
-# Nixos Information
+= Nixos Information =
 
-## What is Nixos
+== What is Nixos ==
 
 This repo contains nixos configuration for showcase of NixOS. NixOS is following the goal to perform whole OS config in one configuration file. In order to achieve this, NixOS relies on:
 1. a "pure" language 'Nix';
@@ -181,7 +181,7 @@ This repo contains nixos configuration for showcase of NixOS. NixOS is following
 3. modeling a whole system as a 'set' of options.
 
 
-## Structure
+== Structure ==
 
 NixOS allows us to import configuration files ("nix expressions"), so we can split configuration in modules and import them with `imports` option.
 
@@ -201,43 +201,43 @@ All other modules are being imported from this file.
 
 `overlays/` - directory, which is supposed to contain number of git submodules with nix-expressions.
 
-## Submodules
+== Submodules ==
 
 `overlays/mempool-overlay` is a git submodule, which contains an extension to NixOS configuration options, which adds possibility to build and enable mempool-backend instances and mempool-frontend as well. 
 `overlays/electrs-overlay` is a git submodule, which contains an extension to NixOS configuration options, which adds possibility to build and enable electrs instances
 
-# Difference with mempool's production how-to
+= Difference with mempool's production how-to =
 
 Mempool developers provide example of configs, that are being used for production instance of the mempool.space. Here goes a list of things, that are different from those production examples:
 
-## electrs
+== electrs ==
 
 the original Mempool's README defines a `Electrum Server (romanz/electrs)` as a dependency, but the production example is using `Blockstream/electrs`, which is the fork of the former. There are differences with arguments support between them. We are using `Electrum Server (romanz/electrs)` and there is a NixOS overlay for it: https://github.com/dambaev/electrs-overlay
 
-## Hardware configuration
+== Hardware configuration ==
 
 Production how to defines a hardware configuration of the node, which may be considered as an example instead of mandatory.
 
-## Tor
+== Tor ==
 
 we are not using `tor` at the moment
 
-## Bitcoin core
+== Bitcoin core ==
 
 We are not using options:
 - dbcache=3700: because, this affects amount of RAM cache, so this value is expected to be fine-tuned on a node with fixed resources
 - maxconnections=1337: because at the moment we are only use outbound connections, which are limited to 11. Affects RAM footprint as well.
 
-## Elements
+== Elements ==
 
 We don't use Elements Core at the moment
 
-## Mempool configs
+== Mempool configs ==
 
 - `"MINED_BLOCKS_CACHE": 144` - we don't use such option, because there is no such option in https://github.com/mempool/mempool/blob/master/backend/src/config.ts, as it was removed in Oct 2020;
 - `"SPAWN_CLUSTER_PROCS": 0` - as  this value is the default value;
 
-## Nginx configs
+== Nginx configs ==
 
 At the moment, we are reusing the same nginx config, that had been provided by mempool's developers with addition of enabling per-network routing, dependently on enabled networks. The only difference is that we split this config into parts in order to use those parts for specifying in appropriate nixos options for nginx.
 
