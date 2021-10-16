@@ -40,11 +40,11 @@ runcmd:
   - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=digitalocean NIXOS_IMPORT=./host.nix NIX_CHANNEL=nixos-21.05 bash 2>&1 | tee /tmp/infect.log
 </pre>
 
-7. select ssh keys, that will be used to access as a root user;
+6. select ssh keys, that will be used to access as a root user;
 
-8. select meaningful droplet name and tags;
+7. select meaningful droplet name and tags;
 
-9. hit `Create Droplet`.
+8. hit `Create Droplet`.
 
 The droplet will be created and then, DigitalOcean agent will start the process of taking over the OS. After that, droplet will be rebooted.
 
