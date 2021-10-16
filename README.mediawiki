@@ -14,15 +14,16 @@ Both options will achieve the result in 3 steps:
 
 == Taking over Debian droplet with nix-infect ==
 
-# Goto 'Create' -> 'Droplet';
+1. Goto 'Create' -> 'Droplet';
 
-# select 'CentOS 8' distribution. (CentOS 8 uses XFS as a rootfs, which is more preferred for NixOS than Ext4 due to /nix/store could have a big amount of inodes, which Ext4 handles not so well);
+2. select 'CentOS 8' distribution. (CentOS 8 uses XFS as a rootfs, which is more preferred for NixOS than Ext4 due to /nix/store could have a big amount of inodes, which Ext4 handles not so well);
 
-# choose your plan. The more, the better, of course, but initially, I recommend to choose the smallest, as it will create the smallest storage volume for droplet. It will be possible to resize CPU/RAM/Storage later and, in fact, we will do that at some point for CPU and RAM;
+3. choose your plan. The more, the better, of course, but initially, I recommend to choose the smallest, as it will create the smallest storage volume for droplet. It will be possible to resize CPU/RAM/Storage later and, in fact, we will do that at some point for CPU and RAM;
 
-# 6 additional storage volumes will be needed for mempool setup, but droplet creation wizard does not allow to create more than 1 volume and/or select name for it. So, it will need to be done after droplet creation, but you need to confirm, that you are will create droplet in a datacenter, that support creating additional volumes. Choose DC.
+4. 6 additional storage volumes will be needed for mempool setup, but droplet creation wizard does not allow to create more than 1 volume and/or select name for it. So, it will need to be done after droplet creation, but you need to confirm, that you are will create droplet in a datacenter, that support creating additional volumes. Choose DC.
 
-# In the "select additional options" form, select "user data" and paste this snippet in the appeared input:
+5. In the "select additional options" form, select "user data" and paste this snippet in the appeared input:
+
 <pre>
 #cloud-config
 write_files:
@@ -37,11 +38,11 @@ runcmd:
   - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=digitalocean NIXOS_IMPORT=./host.nix NIX_CHANNEL=nixos-21.05 bash 2>&1 | tee /tmp/infect.log
 </pre>
 
-# select ssh keys, that will be used to access as a root user;
+6. select ssh keys, that will be used to access as a root user;
 
-# select meaningful droplet name and tags;
+7. select meaningful droplet name and tags;
 
-# hit '''Create Droplet'''.
+8. hit '''Create Droplet'''.
 
 The droplet will be created and then, DigitalOcean agent will start the process of taking over the OS. After that, droplet will be rebooted.
 
