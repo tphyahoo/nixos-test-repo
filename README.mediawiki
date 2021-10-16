@@ -57,14 +57,15 @@ We need to add 6 more volumes (format: volume-name (volume-size)) :
 * bitcoind-signet ( 1 GiB);
 * electrs-signet ( 500 MiB).
 
-# Go to "Volumes"
-# for each volume, declared above do: 
-## "Create volume";
-## Enter appropriate name and size;
-## choose the droplet to add to;
-## choose "Automatically Format & Mount" and "XFS" as a file system;
-## hit "Create Volume";
-# Login into droplet with <pre> ssh -A root@<droplet_IP> </pre> and confirm, that it is already running NixOS:
+1. Go to "Volumes"
+2. for each volume, declared above do: 
+2.1. "Create volume";
+2.2. Enter appropriate name and size;
+2.3. choose the droplet to add to;
+2.4. choose "Automatically Format & Mount" and "XFS" as a file system;
+2.5. hit "Create Volume";
+
+3. Login into droplet with <pre> ssh -A root@<droplet_IP> </pre> and confirm, that it is already running NixOS:
 
 <pre>
 cat /etc/os-release | grep NAME | grep NixOS
@@ -80,7 +81,7 @@ droplet should reboot when taking over will be finished. Then, you will need to 
 
 <pre>ssh-keygen -R <droplet_IP</pre> and relogin again with <pre>ssh -A root@<droplet_IP></pre>
 
-# add appropriate mount points for created volumes with this command:
+4. add appropriate mount points for created volumes with this command:
 
 <pre>
 echo '--- a/hardware-configuration.nix  2021-09-21 00:32:37.078564115 +0000
@@ -101,7 +102,7 @@ echo '--- a/hardware-configuration.nix  2021-09-21 00:32:37.078564115 +0000
  ' | patch -p1  -d /etc/nixos/
 </pre>
 
-# build and apply configuration with:
+5. build and apply configuration with:
 
 <pre>
 nixos-rebuild switch
@@ -114,25 +115,25 @@ Now you can confirm with <pre> mount | grep --count /mnt </pre> that there are 6
 
 Now it is time to replace config of the fresh NixOS with config from the current repo. Fot this:
 
-# Resize droplet's CPU and RAM to at least 4 vCPUs and 8 GiB of RAM to perform an initial sync. For this:
-## shutdown droplet;
-## goto Droplet -> Resize droplet;
-## choose approprite plan;
-## start the droplet
+1. Resize droplet's CPU and RAM to at least 4 vCPUs and 8 GiB of RAM to perform an initial sync. For this:
+1.2. shutdown droplet;
+1.3. goto Droplet -> Resize droplet;
+1.4. choose approprite plan;
+1.5. start the droplet
 
-# login to the Droplet with droplet IP from DO dashboard:
+2. login to the Droplet with droplet IP from DO dashboard:
 
 <pre>
 ssh -A root@<droplet_IP>
 </pre>
 
-## clone the repo with
+3. clone the repo with
 
 <pre>
 git clone --recursive https://github.com/dambaev/nixos-test-repo.git
 </pre>
 
-## move the content of the repo into <pre> /etc/nixos/ </pre>
+4. move the content of the repo into <pre> /etc/nixos/ </pre>
 
 <pre>
 mv nixos-test-repo/* /etc/nixos/
@@ -148,19 +149,19 @@ git pull
 
 it should not report any errors
 
-# fill the /etc/nixos/local.hostname.nix with hostname:
+5. fill the /etc/nixos/local.hostname.nix with hostname:
 
 <pre>
 echo "\"$(hostname)\"" > /etc/nixos/local.hostname.nix
 </pre>
 
-# generate secrets for bitcoin rpc and dbs:
+6. generate secrets for bitcoin rpc and dbs:
 
 <pre>
 /etc/nixos/gen-psk.sh
 </pre>
 
-# rebuild and apply config:
+7. rebuild and apply config:
 
 <pre>
 nixos-rebuild switch
@@ -168,7 +169,7 @@ nixos-rebuild switch
 
 WARNING: currently, this step will replace os users and their public ssh keys
 
-# now wait for bitcoind and electrs instances to sync the data and you can resize the droplet back to your load
+8. now wait for bitcoind and electrs instances to sync the data and you can resize the droplet back to your load
 
 
 = Nixos Information =
