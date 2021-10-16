@@ -26,7 +26,7 @@ choose DC;
 
 5. In the "select additional options" form, select "user data" and paste this snippet in the appeared input:
 
-```
+<pre>
 #cloud-config
 write_files:
 - path: /etc/nixos/host.nix
@@ -38,7 +38,7 @@ write_files:
     }
 runcmd:
   - curl https://raw.githubusercontent.com/elitak/nixos-infect/master/nixos-infect | PROVIDER=digitalocean NIXOS_IMPORT=./host.nix NIX_CHANNEL=nixos-21.05 bash 2>&1 | tee /tmp/infect.log
-```
+</pre>
 
 7. select ssh keys, that will be used to access as a root user;
 
@@ -69,21 +69,21 @@ We need to add 6 more volumes (format: volume-name (volume-size)) :
 2.5. hit "Create Volume";
 3. Login into droplet with `ssh -A root@<droplet_IP>` and confirm, that it is already running NixOS:
 
-```
+<pre>
 cat /etc/os-release | grep NAME | grep NixOS
-```
+</pre>
 
 if not, you can track the process of taking over of OS with:
 
-```
+<pre>
 tail -f /tmp/infect.log
-```
+</pre>
 
 droplet should reboot when taking over will be finished. Then, you will need to clean the ssh fingerprint for this host with `ssh-keygen -R <droplet_IP` and relogin again with `ssh -A root@<droplet_IP>`;
 
 4. add appropriate mount points for created volumes with this command:
 
-```
+<pre>
 echo '--- a/hardware-configuration.nix  2021-09-21 00:32:37.078564115 +0000
 +++ b/hardware-configuration.nix       2021-09-21 00:37:58.127504552 +0000
 @@ -3,5 +3,11 @@
@@ -100,13 +100,13 @@ echo '--- a/hardware-configuration.nix  2021-09-21 00:32:37.078564115 +0000
 +  fileSystems."/mnt/electrs-signet" = { device = "/dev/disk/by-id/scsi-0DO_Volume_electrs-signet"; fsType = "xfs"; options = [ "noatime" "discard"]; };
  }
  ' | patch -p1  -d /etc/nixos/
-```
+</pre>
 
 5. build and apply configuration with:
 
-```
+<pre>
 nixos-rebuild switch
-```
+</pre>
 
 
 Now you can confirm with `mount | grep --count /mnt`, that there are 6 mount points in the `/mnt`.
@@ -123,48 +123,49 @@ Now it is time to replace config of the fresh NixOS with config from the current
 
 2. login to the Droplet with droplet IP from DO dashboard:
 
-```
+<pre>
 ssh -A root@<droplet_IP>
-```
+</pre>
 
 3. clone the repo with
 
-```
+<pre>
 git clone --recursive https://github.com/dambaev/nixos-test-repo.git
-```
+</pre>
 
 4. move the content of the repo into `/etc/nixos/`:
 
-```
+<pre>
 mv nixos-test-repo/* /etc/nixos/
 mv nixos-test-repo/.git* /etc/nixos/
-```
+</pre>
+
 confirm, that `git` determines `/etc/nixos/` as a repo by doing:
 
-```
+<pre>
 cd /etc/nixos
 git pull
-```
+</pre>
 
 it should not report any errors
 
 5. fill the `/etc/nixos/local.hostname.nix` with hostname:
 
-```
+<pre>
 echo "\"$(hostname)\"" > /etc/nixos/local.hostname.nix
-```
+</pre>
 
 6. generate secrets for bitcoin rpc and dbs:
 
-```
+<pre>
 /etc/nixos/gen-psk.sh
-```
+</pre>
 
 7. rebuild and apply config:
 
-```
+<pre>
 nixos-rebuild switch
-```
+</pre>
 
 WARNING: currently, this step will replace os users and their public ssh keys
 
